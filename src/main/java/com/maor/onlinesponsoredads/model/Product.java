@@ -26,7 +26,7 @@ public class Product {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer serialNumber;
+  private Long serialNumber;
 
   @ManyToMany(mappedBy = "products")
   private List<Campaign> campaigns;
