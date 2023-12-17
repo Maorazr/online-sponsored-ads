@@ -1,21 +1,19 @@
 package com.maor.onlinesponsoredads.dto;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductDto {
 
-  @NotNull
+  @NotBlank
   private String title;
 
-  @NotNull
+  @NotBlank
   private String category;
 
   private double price;
