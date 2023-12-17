@@ -3,9 +3,17 @@ package com.maor.onlinesponsoredads.mapper;
 import com.maor.onlinesponsoredads.dto.ProductDto;
 import com.maor.onlinesponsoredads.model.Product;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
   ProductDto productToDto(Product product);
-  Product dtoToProduct(ProductDto dto);
+
+  @Mapping(target = "campaigns", ignore = true)
+  @Mapping(target = "serialNumber", ignore = true)
+  Product dtoToProduct(ProductDto productDto);
+
+  default Long mapProductToInteger(Product product) {
+    return product.getSerialNumber();
+  }
 }
