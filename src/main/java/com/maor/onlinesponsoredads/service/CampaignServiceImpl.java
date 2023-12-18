@@ -1,6 +1,7 @@
 package com.maor.onlinesponsoredads.service;
 
 import com.maor.onlinesponsoredads.dto.CampaignDto;
+import com.maor.onlinesponsoredads.exceptions.CategoryNotFoundException;
 import com.maor.onlinesponsoredads.mapper.CampaignMapper;
 import com.maor.onlinesponsoredads.model.Campaign;
 import com.maor.onlinesponsoredads.model.Product;
@@ -61,6 +62,9 @@ public class CampaignServiceImpl implements CampaignService {
   }
 
   public Campaign getValidTopCampaignByCategory(String category) {
+    if (!productRepository.existsByCategory(category)) {
+      throw new CategoryNotFoundException("Category not found: " + category);
+    }
     LocalDateTime tenDaysAgo = LocalDateTime.now().minusDays(10);
     List<Campaign> activeCampaigns =
       campaignRepository.findCampaignsByStartDateGreaterThanAndProductsCategory(
@@ -76,5 +80,9 @@ public class CampaignServiceImpl implements CampaignService {
       .stream()
       .max(Comparator.comparing(Campaign::getBid))
       .orElse(null);
+  }
+
+  private boolean categoryExists(String category) {
+    return productRepository.existsByCategory(category);
   }
 }

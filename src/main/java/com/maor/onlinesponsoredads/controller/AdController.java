@@ -23,17 +23,12 @@ public class AdController {
   @GetMapping("{category}")
   public ResponseEntity<ProductDto> serveAd(@PathVariable String category) {
     Campaign campaign = campaignService.getValidTopCampaignByCategory(category);
-    if (campaign == null) {
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
 
     ProductDto productDto = adService.getProductByCategoryAndCampaign(
       category,
       campaign
     );
-    if (productDto == null) {
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
+
     return ResponseEntity.ok(productDto);
   }
 }

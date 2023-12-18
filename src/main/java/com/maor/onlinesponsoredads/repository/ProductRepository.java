@@ -15,4 +15,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     LocalDateTime date,
     String category
   );
+  boolean existsByCategory(String category);
 }
