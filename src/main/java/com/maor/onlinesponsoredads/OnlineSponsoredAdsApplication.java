@@ -7,6 +7,7 @@ import com.maor.onlinesponsoredads.repository.ProductRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -25,33 +26,27 @@ public class OnlineSponsoredAdsApplication {
     CampaignRepository campaignRepository
   ) {
     return args -> {
-      Product product1 = new Product(
-        "Product 1",
+      List<String> categories = List.of(
         "Electronics",
-        299.99,
-        null,
-        new ArrayList<>()
+        "Fashion",
+        "Home Decor",
+        "Sports",
+        "Books"
       );
 
-      Product product2 = new Product(
-        "Product 2",
-        "Electronics",
-        59.99,
-        null,
-        new ArrayList<>()
-      );
+      List<Product> savedProducts = new ArrayList<>();
 
-      Product product3 = new Product(
-        "Product 3",
-        "PetSupply",
-        59.99,
-        null,
-        new ArrayList<>()
-      );
-
-      product1 = productRepository.save(product1);
-      product2 = productRepository.save(product2);
-      product3 = productRepository.save(product3);
+      for (int i = 1; i <= 20; i++) {
+        String category = categories.get((i - 1) % categories.size());
+        Product product = new Product(
+          "Product " + i,
+          category,
+          i * 10.0,
+          null,
+          new ArrayList<>()
+        );
+        savedProducts.add(productRepository.save(product));
+      }
 
       Campaign campaign1 = new Campaign(
         null,
@@ -63,22 +58,40 @@ public class OnlineSponsoredAdsApplication {
 
       Campaign campaign2 = new Campaign(
         null,
-        "Summer Sale",
+        "Winter Collection",
         LocalDateTime.now(),
         new ArrayList<>(),
-        0.
+        0.2
       );
 
-      campaign1.getProducts().add(product1);
-      campaign2.getProducts().add(product2);
-      campaign2.getProducts().add(product3);
+      Campaign campaign3 = new Campaign(
+        null,
+        "Winter Sale",
+        LocalDateTime.now(),
+        new ArrayList<>(),
+        0.3
+      );
+
+      for (Product product : savedProducts) {
+        if (product.getSerialNumber() % 2 == 0) {
+          campaign1.getProducts().add(product);
+          product.getCampaigns().add(campaign1);
+        } else if (product.getSerialNumber() % 3 == 0) {
+          campaign3.getProducts().add(product);
+          product.getCampaigns().add(campaign3);
+        } else {
+          campaign2.getProducts().add(product);
+          product.getCampaigns().add(campaign2);
+        }
+      }
+
       campaignRepository.save(campaign1);
       campaignRepository.save(campaign2);
+      campaignRepository.save(campaign3);
 
-      product1.setCampaigns(
-        new ArrayList<>(Collections.singletonList(campaign1))
-      );
-      productRepository.save(product1);
+      for (Product product : savedProducts) {
+        productRepository.save(product);
+      }
     };
   }
 }

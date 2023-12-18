@@ -29,6 +29,7 @@ public interface CampaignMapper {
     if (serials == null) {
       return null;
     }
+
     return productRepository.findAllById(serials);
   }
 

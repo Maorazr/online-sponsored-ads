@@ -13,7 +13,8 @@ public interface ProductMapper {
   @Mapping(target = "serialNumber", ignore = true)
   Product dtoToProduct(ProductDto productDto);
 
-  default Long mapProductToInteger(Product product) {
+  default Long mapProductToLong(Product product) {
+    System.out.println(product.getSerialNumber());
     return product.getSerialNumber();
   }
 }
