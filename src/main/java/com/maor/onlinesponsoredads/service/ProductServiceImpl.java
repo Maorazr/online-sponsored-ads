@@ -26,12 +26,13 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public Optional<ProductDto> getPromotedProductByCategory(String category) {
     LocalDateTime activeSince = LocalDateTime.now().minusDays(10);
-
+    System.out.println("Active since: " + activeSince);
     List<Product> products =
       productRepository.findByCampaignsStartDateLessThanEqualAndCategory(
         activeSince,
         category
       );
+    System.out.println("Found products: " + products.size());
 
     return products
       .stream()
@@ -40,6 +41,7 @@ public class ProductServiceImpl implements ProductService {
   }
 
   private double getHighestBidForProduct(Product product) {
+    System.out.println(product);
     return product
       .getCampaigns()
       .stream()

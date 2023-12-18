@@ -7,7 +7,9 @@ import com.maor.onlinesponsoredads.model.Product;
 import com.maor.onlinesponsoredads.repository.CampaignRepository;
 import com.maor.onlinesponsoredads.repository.ProductRepository;
 import jakarta.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,5 +58,23 @@ public class CampaignServiceImpl implements CampaignService {
     Campaign savedCampaign = campaignRepository.save(campaign);
 
     return campaignMapper.campaignToDto(savedCampaign, productRepository);
+  }
+
+  public Campaign getValidTopCampaignByCategory(String category) {
+    LocalDateTime tenDaysAgo = LocalDateTime.now().minusDays(10);
+    List<Campaign> activeCampaigns =
+      campaignRepository.findCampaignsByStartDateGreaterThanAndProductsCategory(
+        tenDaysAgo,
+        category
+      );
+    return getCampaignWithHighestBid(activeCampaigns);
+  }
+
+  @Override
+  public Campaign getCampaignWithHighestBid(List<Campaign> campaigns) {
+    return campaigns
+      .stream()
+      .max(Comparator.comparing(Campaign::getBid))
+      .orElse(null);
   }
 }

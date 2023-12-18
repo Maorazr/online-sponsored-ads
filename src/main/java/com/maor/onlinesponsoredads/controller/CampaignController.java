@@ -2,6 +2,7 @@ package com.maor.onlinesponsoredads.controller;
 
 import com.maor.onlinesponsoredads.dto.CampaignDto;
 import com.maor.onlinesponsoredads.service.CampaignService;
+import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class CampaignController {
 
   @PostMapping
   public ResponseEntity<CampaignDto> createCampaign(
-    @RequestBody CampaignDto campaignDto
+    @Valid @RequestBody CampaignDto campaignDto
   ) {
     return new ResponseEntity<>(
       campaignService.createCampaign(campaignDto),
