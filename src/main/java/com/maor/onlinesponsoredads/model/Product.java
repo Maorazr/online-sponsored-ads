@@ -6,14 +6,16 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -29,5 +31,5 @@ public class Product {
   private Long serialNumber;
 
   @ManyToMany(mappedBy = "products")
-  private List<Campaign> campaigns;
+  private List<Campaign> campaigns = new ArrayList<>();
 }

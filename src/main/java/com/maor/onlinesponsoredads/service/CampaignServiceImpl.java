@@ -7,16 +7,23 @@ import com.maor.onlinesponsoredads.model.Product;
 import com.maor.onlinesponsoredads.repository.CampaignRepository;
 import com.maor.onlinesponsoredads.repository.ProductRepository;
 import jakarta.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Data
 @Service
+@AllArgsConstructor
 public class CampaignServiceImpl implements CampaignService {
 
+  @Autowired
   private CampaignRepository campaignRepository;
+
+  @Autowired
   private ProductRepository productRepository;
+
+  @Autowired
   private CampaignMapper campaignMapper;
 
   @Override
@@ -35,7 +42,15 @@ public class CampaignServiceImpl implements CampaignService {
         campaignDto.getProductsSerialNumbers()
       );
       campaign.setProducts(products);
-      products.forEach(product -> product.getCampaigns().add(campaign));
+
+      products.forEach(product -> {
+        List<Campaign> campaigns = product.getCampaigns();
+        if (!(campaigns instanceof ArrayList)) {
+          campaigns = new ArrayList<>(campaigns);
+          product.setCampaigns(campaigns);
+        }
+        campaigns.add(campaign);
+      });
     }
 
     Campaign savedCampaign = campaignRepository.save(campaign);

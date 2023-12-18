@@ -2,6 +2,7 @@ package com.maor.onlinesponsoredads.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,7 +28,7 @@ public class Campaign {
     joinColumns = @JoinColumn(name = "campaign_id"),
     inverseJoinColumns = @JoinColumn(name = "serial_number")
   )
-  private List<Product> products;
+  private List<Product> products = new ArrayList<>();
 
   private double bid;
 }
