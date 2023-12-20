@@ -81,8 +81,4 @@ public class CampaignServiceImpl implements CampaignService {
       .max(Comparator.comparing(Campaign::getBid))
       .orElse(null);
   }
-
-  private boolean categoryExists(String category) {
-    return productRepository.existsByCategory(category);
-  }
 }

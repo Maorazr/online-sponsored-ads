@@ -1,8 +1,10 @@
 package com.maor.onlinesponsoredads.service;
 
 import com.maor.onlinesponsoredads.dto.ProductDto;
-import java.util.Optional;
+import java.util.List;
 
 public interface ProductService {
-  Optional<ProductDto> getPromotedProductByCategory(String category);
+  ProductDto addProduct(ProductDto productDto);
+  ProductDto getProductBySerialNumber(Long serialNumber);
+  List<ProductDto> getAllProducts();
 }

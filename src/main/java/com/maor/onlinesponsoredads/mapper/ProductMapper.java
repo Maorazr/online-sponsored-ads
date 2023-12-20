@@ -14,7 +14,6 @@ public interface ProductMapper {
   Product dtoToProduct(ProductDto productDto);
 
   default Long mapProductToLong(Product product) {
-    System.out.println(product.getSerialNumber());
     return product.getSerialNumber();
   }
 }
